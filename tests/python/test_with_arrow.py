@@ -60,7 +60,7 @@ class TestArrowTable(unittest.TestCase):
         assert dm.num_col() == 3
 
     def test_arrow_table_from_csv(self):
-        dfile = dpath + 'veterans_lung_cancer.csv' 
+        dfile = dpath + 'veterans_lung_cancer.csv'
         table = pc.read_csv(dfile)
         dm = xgb.DMatrix(table)
         assert dm.num_row() == 137
