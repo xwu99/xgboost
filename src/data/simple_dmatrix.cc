@@ -251,11 +251,11 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
   bst_uint group_size = 0;
   auto& offset_vec = sparse_page_->offset.HostVector();
   auto& data_vec = sparse_page_->data.HostVector();
-  auto& labels = info_.labels_.HostVector();
+  auto& labels = info_.labels.Data()->HostVector();
   auto& labels_lb = info_.labels_lower_bound_.HostVector();
   auto& labels_ub = info_.labels_upper_bound_.HostVector();
   auto& weights = info_.weights_.HostVector();
-  auto& base_margin = info_.base_margin_.HostVector();
+  auto& base_margin = info_.base_margin_.Data()->HostVector();
   uint64_t total_batch_size = 0;
   uint64_t total_elements = 0;
   int nthread_original = common::OmpSetNumThreadsWithoutHT(&nthread);
