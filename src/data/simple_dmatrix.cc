@@ -268,7 +268,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
     size_t num_rows = 0;
     // Import Arrow RecordBatches
 #pragma omp parallel for reduction(+:num_elements, num_rows) num_threads(nthread)
-    for (int i = 0; i < batches.size(); ++i) {
+    for (size_t i = 0; i < batches.size(); ++i) {
       num_elements += batches[i]->Import(missing);
       num_rows += batches[i]->Size();
     }
@@ -276,7 +276,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
     total_batch_size += num_rows;
     // Compute global offset for every row and starting row for every batch
     std::vector<uint64_t> batch_offsets(batches.size());
-    for (int i = 0; i < batches.size(); ++i) {
+    for (size_t i = 0; i < batches.size(); ++i) {
       if (i == 0) {
         batch_offsets[i] = total_batch_size - num_rows;
         batches[i]->ShiftRowOffsets(total_elements - num_elements);
@@ -307,7 +307,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
 #pragma omp parallel num_threads(nthread)
     {
 #pragma omp for nowait
-    for (int i = 0; i < batches.size(); ++i) {
+    for (size_t i = 0; i < batches.size(); ++i) {
       size_t begin = batches[i]->RowOffsets()[0];
       for (size_t k = 0; k < batches[i]->Size(); ++k) {
         for (size_t j = 0; j < batches[i]->NumColumns(); ++j) {
@@ -319,7 +319,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
       }
     }
 #pragma omp for nowait
-    for (int i = 0; i < batches.size(); ++i) {
+    for (size_t i = 0; i < batches.size(); ++i) {
       auto& offsets = batches[i]->RowOffsets();
       std::copy(offsets.begin() + 1, offsets.end(),
           offset_vec.begin() + batch_offsets[i] + 1);
@@ -349,7 +349,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
     }
     }
     // Compute group ids
-    for (int i = 0; i < batches.size(); ++i) {
+    for (size_t i = 0; i < batches.size(); ++i) {
       if (batches[i]->Qid() != nullptr) {
         // get group
         for (size_t i = 0; i < batches[i]->Size(); ++i) {
