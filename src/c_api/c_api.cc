@@ -444,12 +444,12 @@ XGB_DLL int XGDMatrixCreateFromArrowCallback(
     DMatrixHandle *out) {
   API_BEGIN();
   data::RecordBatchesIterAdapter adapter(next,
-                                      label_col_name,
-                                      label_lb_col_name,
-                                      label_ub_col_name,
-                                      weight_col_name,
-                                      base_margin_col_name,
-                                      qid_col_name);
+                                         label_col_name,
+                                         label_lb_col_name,
+                                         label_ub_col_name,
+                                         weight_col_name,
+                                         base_margin_col_name,
+                                         qid_col_name);
   *out = new std::shared_ptr<DMatrix>(
       DMatrix::Create(&adapter, missing, nthread));
   API_END();
