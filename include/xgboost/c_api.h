@@ -502,8 +502,8 @@ XGB_DLL int XGProxyDMatrixSetDataCSR(DMatrixHandle handle, char const *indptr,
                                      char const *indices, char const *data,
                                      bst_ulong ncol);
 
-
 #if defined(XGBOOST_BUILD_ARROW_SUPPORT)
+
 XGB_DLL int XGImportRecordBatch(DataIterHandle data_handle, void* ptr_array, void* ptr_schema);
 
 XGB_DLL int XGDMatrixCreateFromArrowCallback(
@@ -517,10 +517,15 @@ XGB_DLL int XGDMatrixCreateFromArrowCallback(
     const char* base_margin_col_name,
     const char* qid_col_name,
     DMatrixHandle *out);
+
 #endif
+
+
 /*
  * ==========================- End data callback APIs ==========================
  */
+
+
 
 /*!
  * \brief create a new dmatrix from sliced content of existing matrix
