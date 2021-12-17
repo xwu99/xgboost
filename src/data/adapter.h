@@ -1222,7 +1222,7 @@ class RecordBatchesIterAdapter: public dmlc::DataIter<ArrowColumnarBatchVec> {
 
   bool Next() override {
     batches_.clear();
-    while (batches_.size() < (size_t)nbatches_ && (*next_callback_)(this) != 0) {
+    while (batches_.size() < static_cast<size_t>(nbatches_) && (*next_callback_)(this) != 0) {
       at_first_ = false;
     }
 
