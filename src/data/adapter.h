@@ -976,7 +976,7 @@ class ArrowColumnarBatch {
 
   size_t Import(float missing) {
     auto& infov = schema_->columns_;
-    for (auto i = 0; i < infov.size(); ++i) {
+    for (size_t i = 0; i < infov.size(); ++i) {
       columns_.push_back(CreateColumn(i, infov[i], missing));
     }
     if (schema_->label_info_.type != ColumnDType::UNKNOWN) {
@@ -1013,7 +1013,7 @@ class ArrowColumnarBatch {
     auto batch_size = rb_->length;
     auto num_columns = columns_.size();
     row_offsets_.resize(batch_size + 1, 0);
-    for (size_t i = 0; i < batch_size; ++i) {
+    for (auto i = 0; i < batch_size; ++i) {
       row_offsets_[i+1] = row_offsets_[i];
       for (size_t j = 0; j < num_columns; ++j) {
         if (GetColumn(j).IsValidElement(i)) {
@@ -1118,8 +1118,8 @@ class ArrowColumnarBatch {
     }
 
     auto loc_in_batch = info.loc;
-    size_t length = rb_->length;
-    size_t null_count = rb_->null_count;
+    auto length = rb_->length;
+    auto null_count = rb_->null_count;
     auto buffers0 = rb_->children[loc_in_batch]->buffers[0];
     auto buffers1 = rb_->children[loc_in_batch]->buffers[1];
     const uint8_t* bitmap = buffers0 ? reinterpret_cast<const uint8_t*>(buffers0) : nullptr;
@@ -1222,7 +1222,7 @@ class RecordBatchesIterAdapter: public dmlc::DataIter<ArrowColumnarBatchVec> {
 
   bool Next() override {
     batches_.clear();
-    while (batches_.size() < nbatches_ && (*next_callback_)(this) != 0) {
+    while (batches_.size() < (size_t)nbatches_ && (*next_callback_)(this) != 0) {
       at_first_ = false;
     }
 
