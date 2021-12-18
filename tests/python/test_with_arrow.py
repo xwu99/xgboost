@@ -40,15 +40,6 @@ class TestArrowTable(unittest.TestCase):
         assert dm.num_col() == 3
         np.testing.assert_array_equal(dm.get_label(), np.array([0, 1]))
 
-    def test_arrow_table_with_label_name(self):
-        df = pd.DataFrame([[1, 2., 3., 0], [2, 3., 4., 1]],
-                          columns=['a', 'b', 'c', 'd'])
-        table = pa.Table.from_pandas(df)
-        dm = xgb.DMatrix(table, label='d')
-        assert dm.num_row() == 2
-        assert dm.num_col() == 3
-        np.testing.assert_array_equal(dm.get_label(), np.array([0, 1]))
-
     def test_arrow_table_from_np(self):
         coldata = np.array([[1., 1., 0., 0.],
                             [2., 0., 1., 0.],
@@ -94,9 +85,13 @@ class TestArrowTable(unittest.TestCase):
     def test_arrow_survival(self):
         dfile = dpath + 'veterans_lung_cancer.csv'
         table = pc.read_csv(dfile)
-        dtrain = xgb.DMatrix(table,
-                label_lower_bound='Survival_label_lower_bound',
-                label_upper_bound='Survival_label_upper_bound')
+        y_lower_bound = table['Survival_label_lower_bound']
+        y_upper_bound = table['Survival_label_upper_bound']
+        X = table.drop(['Survival_label_lower_bound', 'Survival_label_upper_bound'])
+
+        dtrain = xgb.DMatrix(X)
+        dtrain.set_float_info('label_lower_bound', y_lower_bound)
+        dtrain.set_float_info('label_upper_bound', y_upper_bound)
 
         base_params = {'verbosity': 0,
                        'objective': 'survival:aft',
