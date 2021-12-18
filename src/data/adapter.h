@@ -845,7 +845,7 @@ class PrimitiveColumn : public Column {
 
   bool IsValidElement(size_t row_idx) const override {
     return IsValid(row_idx)
-            && std::isfinite(data_[row_idx])
+            && std::isfinite(static_cast<double>(data_[row_idx])) // cast to double to prevent msvc report error
             && static_cast<float>(data_[row_idx]) != missing_;
   }
 
