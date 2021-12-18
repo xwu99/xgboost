@@ -268,7 +268,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
     size_t num_rows = 0;
     // Import Arrow RecordBatches
 #pragma omp parallel for reduction(+:num_elements, num_rows) num_threads(nthread)
-    for (size_t i = 0; i < batches.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(batches.size()); ++i) {
       num_elements += batches[i]->Import(missing);
       num_rows += batches[i]->Size();
     }
@@ -307,7 +307,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
 #pragma omp parallel num_threads(nthread)
     {
 #pragma omp for nowait
-    for (size_t i = 0; i < batches.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(batches.size()); ++i) {
       size_t begin = batches[i]->RowOffsets()[0];
       for (size_t k = 0; k < batches[i]->Size(); ++k) {
         for (size_t j = 0; j < batches[i]->NumColumns(); ++j) {
@@ -319,7 +319,7 @@ SimpleDMatrix::SimpleDMatrix(RecordBatchesIterAdapter* adapter,
       }
     }
 #pragma omp for nowait
-    for (size_t i = 0; i < batches.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(batches.size()); ++i) {
       auto& offsets = batches[i]->RowOffsets();
       std::copy(offsets.begin() + 1, offsets.end(),
           offset_vec.begin() + batch_offsets[i] + 1);
