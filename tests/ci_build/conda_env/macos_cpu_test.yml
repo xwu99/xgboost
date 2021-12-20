@@ -31,6 +31,7 @@ dependencies:
 - jsonschema
 - boto3
 - awscli
+- pyarrow
 - pip:
   - sphinx_rtd_theme
   - datatable
