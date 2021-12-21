@@ -16,4 +16,5 @@ dependencies:
 - python-graphviz
 - modin-ray
 - pip
+- cffi
 - pyarrow

@@ -90,7 +90,7 @@ jobs:
     - name: Test Python package
       shell: bash -l {0}
       run: |
-        pytest -s -v -rA ./tests/python
+        pytest -v -s -rxXs --fulltrace ./tests/python
 
   python-tests-on-macos:
     name: Test XGBoost Python package on ${{ matrix.config.os }}
@@ -140,7 +140,7 @@ jobs:
     - name: Test Python package
       shell: bash -l {0}
       run: |
-        pytest -s -v -rA ./tests/python
+        pytest -v -s -rxXs --fulltrace ./tests/python
 
     - name: Rename Python wheel
       shell: bash -l {0}
