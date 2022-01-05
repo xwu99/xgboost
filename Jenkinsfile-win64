@@ -41,7 +41,7 @@ pipeline {
         script {
           parallel ([
             'build-win64-cuda11.0': { BuildWin64() },
-            'build-rpkg-win64-cuda11.0': { BuildRPackageWithCUDAWin64() }
+            // 'build-rpkg-win64-cuda11.0': { BuildRPackageWithCUDAWin64() }
           ])
         }
       }
@@ -153,7 +153,7 @@ def TestWin64() {
     conda activate ${env_name} && for /R %%i in (python-package\\dist\\*.whl) DO python -m pip install "%%i"
     """
     echo "Running Python tests..."
-    bat "conda activate ${env_name} && python -m pytest -v -s -rxXs --fulltrace tests\\python"
+    bat "conda activate ${env_name} && python -m pytest -v -s -rxXs --fulltrace tests\\python\\test_with_arrow.py"
     bat """
     conda activate ${env_name} && python -m pytest -v -s -rxXs --fulltrace -m "(not slow) and (not mgpu)" tests\\python-gpu
     """

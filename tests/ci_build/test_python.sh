@@ -61,7 +61,8 @@ case "$suite" in
     source activate cpu_test
     install_xgboost
     export RAY_OBJECT_STORE_ALLOW_SLOW_STORAGE=1
-    pytest -v -s -rxXs --fulltrace --durations=0 ${args} tests/python
+    # pytest -v -s -rxXs --fulltrace --durations=0 ${args} tests/python
+    pytest -v -rxXs --fulltrace --durations=0 ${args} tests/python/test_with_arrow.py
     cd tests/distributed
     ./runtests.sh
     uninstall_xgboost

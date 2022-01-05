@@ -54,10 +54,10 @@ pipeline {
       steps {
         script {
           parallel ([
-            'clang-tidy': { ClangTidy() },
-            'build-cpu': { BuildCPU() },
-            'build-cpu-arm64': { BuildCPUARM64() },
-            'build-cpu-rabit-mock': { BuildCPUMock() },
+            // 'clang-tidy': { ClangTidy() },
+            // 'build-cpu': { BuildCPU() },
+            // 'build-cpu-arm64': { BuildCPUARM64() },
+            // 'build-cpu-rabit-mock': { BuildCPUMock() },
             // Build reference, distribution-ready Python wheel with CUDA 11.0
             // using CentOS 7 image
             'build-gpu-cuda11.0': { BuildCUDA(cuda_version: '11.0', build_rmm: true) },
@@ -75,12 +75,12 @@ pipeline {
         script {
           parallel ([
             'test-python-cpu': { TestPythonCPU() },
-            'test-python-cpu-arm64': { TestPythonCPUARM64() },
+            // 'test-python-cpu-arm64': { TestPythonCPUARM64() },
             // artifact_cuda_version doesn't apply to RMM tests; RMM tests will always match CUDA version between artifact and host env
-            'test-python-gpu-cuda11.0': { TestPythonGPU(artifact_cuda_version: '11.0', host_cuda_version: '11.0', test_rmm: true) },
-            'test-python-mgpu-cuda11.0': { TestPythonGPU(artifact_cuda_version: '11.0', host_cuda_version: '11.0', multi_gpu: true, test_rmm: true) },
-            'test-cpp-gpu-cuda11.0': { TestCppGPU(artifact_cuda_version: '11.0', host_cuda_version: '11.0', test_rmm: true) },
-            'test-jvm-jdk8': { CrossTestJVMwithJDK(jdk_version: '8', spark_version: '3.0.0') }
+            // 'test-python-gpu-cuda11.0': { TestPythonGPU(artifact_cuda_version: '11.0', host_cuda_version: '11.0', test_rmm: true) },
+            // 'test-python-mgpu-cuda11.0': { TestPythonGPU(artifact_cuda_version: '11.0', host_cuda_version: '11.0', multi_gpu: true, test_rmm: true) },
+            // 'test-cpp-gpu-cuda11.0': { TestCppGPU(artifact_cuda_version: '11.0', host_cuda_version: '11.0', test_rmm: true) },
+            // 'test-jvm-jdk8': { CrossTestJVMwithJDK(jdk_version: '8', spark_version: '3.0.0') }
           ])
         }
       }
