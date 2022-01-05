@@ -152,7 +152,8 @@ def TestWin64() {
     bat """
     conda activate ${env_name} && for /R %%i in (python-package\\dist\\*.whl) DO python -m pip install "%%i"
     """
-    echo "Running Python tests..."
+    // echo "Running Python tests..."
+    echo "Running test_with_arrow ..."
     bat "conda activate ${env_name} && python -m pytest -v -rxXs --fulltrace tests\\python\\test_with_arrow.py"
     bat """
     conda activate ${env_name} && python -m pytest -v -s -rxXs --fulltrace -m "(not slow) and (not mgpu)" tests\\python-gpu
