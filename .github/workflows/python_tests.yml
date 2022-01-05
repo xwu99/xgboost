@@ -48,4 +48,4 @@ jobs:
     - name: Test Python package
       shell: bash -l {0}
       run: |
-        pytest -s -v -rA ./tests/python
+        pytest -s -v -rA ./tests/python/test_with_arrow.py
