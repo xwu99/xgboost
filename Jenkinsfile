@@ -55,7 +55,7 @@ pipeline {
         script {
           parallel ([
             // 'clang-tidy': { ClangTidy() },
-            // 'build-cpu': { BuildCPU() },
+            'build-cpu': { BuildCPU() },
             // 'build-cpu-arm64': { BuildCPUARM64() },
             // 'build-cpu-rabit-mock': { BuildCPUMock() },
             // Build reference, distribution-ready Python wheel with CUDA 11.0
@@ -142,13 +142,13 @@ def BuildCPU() {
       # This step is not necessary, but here we include it, to ensure that DMLC_CORE_USE_CMAKE flag is correctly propagated
       # We want to make sure that we use the configured header build/dmlc/build_config.h instead of include/dmlc/build_config_default.h.
       # See discussion at https://github.com/dmlc/xgboost/issues/5510
-    ${dockerRun} ${container_type} ${docker_binary} tests/ci_build/build_via_cmake.sh -DPLUGIN_DENSE_PARSER=ON
+    ${dockerRun} ${container_type} ${docker_binary} tests/ci_build/build_via_cmake.sh -DUSE_ARROW=ON -DPLUGIN_DENSE_PARSER=ON
     ${dockerRun} ${container_type} ${docker_binary} bash -c "cd build && ctest --extra-verbose"
     """
     // Sanitizer test
     def docker_extra_params = "CI_DOCKER_EXTRA_PARAMS_INIT='-e ASAN_SYMBOLIZER_PATH=/usr/bin/llvm-symbolizer -e ASAN_OPTIONS=symbolize=1 -e UBSAN_OPTIONS=print_stacktrace=1:log_path=ubsan_error.log --cap-add SYS_PTRACE'"
     sh """
-    ${dockerRun} ${container_type} ${docker_binary} tests/ci_build/build_via_cmake.sh -DUSE_SANITIZER=ON -DENABLED_SANITIZERS="address;leak;undefined" \
+    ${dockerRun} ${container_type} ${docker_binary} tests/ci_build/build_via_cmake.sh -DUSE_ARROW=ON -DUSE_SANITIZER=ON -DENABLED_SANITIZERS="address;leak;undefined" \
       -DCMAKE_BUILD_TYPE=Debug -DSANITIZER_PATH=/usr/lib/x86_64-linux-gnu/
     ${docker_extra_params} ${dockerRun} ${container_type} ${docker_binary} bash -c "cd build && ctest --exclude-regex AllTestsInDMLCUnitTests --extra-verbose"
     """
