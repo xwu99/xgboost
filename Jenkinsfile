@@ -142,7 +142,7 @@ def BuildCPU() {
       # This step is not necessary, but here we include it, to ensure that DMLC_CORE_USE_CMAKE flag is correctly propagated
       # We want to make sure that we use the configured header build/dmlc/build_config.h instead of include/dmlc/build_config_default.h.
       # See discussion at https://github.com/dmlc/xgboost/issues/5510
-    ${dockerRun} ${container_type} ${docker_binary} tests/ci_build/build_via_cmake.sh -DUSE_ARROW=ON -DPLUGIN_DENSE_PARSER=ON
+    ${dockerRun} ${container_type} ${docker_binary} tests/ci_build/build_via_cmake.sh -DPLUGIN_DENSE_PARSER=ON
     ${dockerRun} ${container_type} ${docker_binary} bash -c "cd build && ctest --extra-verbose"
     """
     // Sanitizer test
@@ -215,7 +215,7 @@ def BuildCUDA(args) {
     }
     def wheel_tag = "manylinux2014_x86_64"
     sh """
-    ${dockerRun} ${container_type} ${docker_binary} ${docker_args} tests/ci_build/build_via_cmake.sh -DUSE_CUDA=ON -DUSE_NCCL=ON -DOPEN_MP:BOOL=ON -DHIDE_CXX_SYMBOLS=ON ${arch_flag}
+    ${dockerRun} ${container_type} ${docker_binary} ${docker_args} tests/ci_build/build_via_cmake.sh -DUSE_ARROW=ON -DUSE_CUDA=ON -DUSE_NCCL=ON -DOPEN_MP:BOOL=ON -DHIDE_CXX_SYMBOLS=ON ${arch_flag}
     ${dockerRun} ${container_type} ${docker_binary} ${docker_args} bash -c "cd python-package && rm -rf dist/* && python setup.py bdist_wheel --universal"
     ${dockerRun} ${container_type} ${docker_binary} ${docker_args} python tests/ci_build/rename_whl.py python-package/dist/*.whl ${commit_id} ${wheel_tag}
     """
@@ -244,7 +244,7 @@ def BuildCUDA(args) {
       docker_args = "--build-arg CUDA_VERSION_ARG=${args.cuda_version}"
       sh """
       rm -rf build/
-      ${dockerRun} ${container_type} ${docker_binary} ${docker_args} tests/ci_build/build_via_cmake.sh --conda-env=gpu_test -DUSE_CUDA=ON -DUSE_NCCL=ON -DPLUGIN_RMM=ON -DBUILD_WITH_CUDA_CUB=ON ${arch_flag}
+      ${dockerRun} ${container_type} ${docker_binary} ${docker_args} tests/ci_build/build_via_cmake.sh --conda-env=gpu_test -DUSE_ARROW=ON -DUSE_CUDA=ON -DUSE_NCCL=ON -DPLUGIN_RMM=ON -DBUILD_WITH_CUDA_CUB=ON ${arch_flag}
       ${dockerRun} ${container_type} ${docker_binary} ${docker_args} bash -c "cd python-package && rm -rf dist/* && python setup.py bdist_wheel --universal"
       ${dockerRun} ${container_type} ${docker_binary} ${docker_args} python tests/ci_build/rename_whl.py python-package/dist/*.whl ${commit_id} manylinux2014_x86_64
       """
