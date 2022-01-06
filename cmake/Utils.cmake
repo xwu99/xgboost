@@ -245,6 +245,10 @@ macro(xgboost_target_defs target)
       PRIVATE
       -DXGBOOST_BUILTIN_PREFETCH_PRESENT=1)
   endif (XGBOOST_BUILTIN_PREFETCH_PRESENT)
+
+  if (USE_ARROW)
+    target_compile_definitions(${target} PRIVATE -DXGBOOST_BUILD_ARROW_SUPPORT)
+  endif (USE_ARROW)
 endmacro(xgboost_target_defs)
 
 # handles dependencies
@@ -274,6 +278,10 @@ macro(xgboost_target_link_libraries target)
   if (USE_NVTX)
     enable_nvtx(${target})
   endif (USE_NVTX)
+
+  if (USE_ARROW)
+    target_link_libraries(${target} PRIVATE arrow_shared)
+  endif (USE_ARROW)
 
   if (RABIT_BUILD_MPI)
     target_link_libraries(${target} PRIVATE MPI::MPI_CXX)
