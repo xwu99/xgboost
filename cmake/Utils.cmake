@@ -279,10 +279,6 @@ macro(xgboost_target_link_libraries target)
     enable_nvtx(${target})
   endif (USE_NVTX)
 
-  if (USE_ARROW)
-    target_link_libraries(${target} PRIVATE arrow_shared)
-  endif (USE_ARROW)
-
   if (RABIT_BUILD_MPI)
     target_link_libraries(${target} PRIVATE MPI::MPI_CXX)
   endif (RABIT_BUILD_MPI)

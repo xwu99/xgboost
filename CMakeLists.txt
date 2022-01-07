@@ -164,10 +164,6 @@ if (USE_NCCL)
   find_package(Nccl REQUIRED)
 endif (USE_NCCL)
 
-if (USE_ARROW)
-  find_package(Arrow REQUIRED)
-endif (USE_ARROW)
-
 # dmlc-core
 msvc_use_static_runtime()
 if (FORCE_SHARED_CRT)
